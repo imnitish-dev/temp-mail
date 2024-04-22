@@ -7,7 +7,9 @@
     "dev": "cross-env NODE_ENV=development nodemon",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint --max-warnings=0  --ignore-path .gitignore --ext .ts src/",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "build": "rimraf ./build && esbuild src/index.ts --platform=node --bundle --minify --outfile=build/index.js",
+    "start": "cross-env NODE_ENV=production node build/index.js"
   },
   "author": "Nitish Gupta",
   "license": "ISC",
@@ -16,6 +18,7 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "esbuild": "^0.20.2",
     "express": "^4.19.2",
     "express-list-routes": "^1.2.1",
     "helmet": "^7.1.0",
@@ -39,6 +42,7 @@
     "@types/smtp-server": "^3.5.10",
     "@typescript-eslint/eslint-plugin": "^7.7.0",
     "@typescript-eslint/parser": "^7.7.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3"
