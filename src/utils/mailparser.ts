@@ -1,8 +1,8 @@
 interface ParsedData {
-  from?: string;
-  date?: string;
-  subject?: string;
-  to?: string;
+  From?: string;
+  Date?: string;
+  Subject?: string;
+  To?: string;
 }
 
 const parseEmailData = (emailData: string): ParsedData => {
