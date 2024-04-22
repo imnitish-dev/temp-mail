@@ -36,7 +36,6 @@ class MailController {
   }
 
   public onRcptTo(address: SMTPServerAddress, session: SMTPServerSession, callback: () => void): void {
-    console.log('onRcptTo', address, session);
     /**
      * onRcptTo { address: 'nitish@test-mail.imnitish.dev', args: false } {
   id: 'xakpgvgasqno3oux',
