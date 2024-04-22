@@ -1,0 +1,21 @@
+{
+  "name": "temp-mail",
+  "version": "0.0.1",
+  "description": "temporary mail service",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon"
+  },
+  "author": "Nitish Gupta",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "reflect-metadata": "^0.2.2",
+    "tsconfig-paths": "^4.2.0",
+    "tslib": "^2.6.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21"
+  }
+}
