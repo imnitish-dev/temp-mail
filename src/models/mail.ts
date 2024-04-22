@@ -19,7 +19,7 @@ const mailSchema = new Schema<IMail>(
       type: Object,
     },
     data: {
-      type: String,
+      type: Object,
     },
   },
   {
