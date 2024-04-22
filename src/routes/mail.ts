@@ -11,6 +11,6 @@ export class MailRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}/test`, mailController.getMail);
+    this.router.get(`${this.path}/:userId`, mailController.getMail);
   }
 }

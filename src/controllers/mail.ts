@@ -19,7 +19,7 @@ class MailController {
         return res.status(404).json({ message: 'Mail not found' });
       }
 
-      return res.status(200).json(data);
+      return res.status(200).json(data.map(mail => mail.data));
     } catch (error) {
       logger.error(error);
       return res.status(500).json({ message: 'Internal server error' });
