@@ -13,7 +13,7 @@ class MailController {
     try {
       const userId = req.params.userId;
       const { page, limit } = req.query;
-      const data = await mailService.getAll({ userId }, { page: Number(page ?? 1), limit: Number(limit ?? 10) });
+      const data = await mailService.getAll({ userId }, { page: Number(page ?? 1), limit: Number(limit ?? 10), sort: { _id: -1 } });
 
       if (data.length === 0) {
         return res.status(404).json({ message: 'Mail not found' });
@@ -70,10 +70,13 @@ class MailController {
     stream.once('end', () => {
       const parsedData = parseEmailData(data);
       mailService
-        .update({ sessionId: session.id }, {
-          data: parsedData,
-          userId: parsedData.To.split('@')[0]
-        })
+        .update(
+          { sessionId: session.id },
+          {
+            data: parsedData,
+            userId: parsedData.To.split('@')[0],
+          },
+        )
         .then(() => {
           logger.info('Mail data saved');
         })

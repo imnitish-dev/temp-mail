@@ -7,9 +7,18 @@ class BaseService<T extends Document> {
     this.model = model;
   }
 
-  public async getAll(filter: FilterQuery<T>, options: { page?: number; limit?: number } = { page: 1, limit: 10 }): Promise<T[]> {
-    const skip = (options.page - 1) * options.limit;
-    return this.model.find(filter).limit(options.limit).skip(skip);
+  public async getAll(
+    filter: FilterQuery<T>,
+    options: { page?: number; limit?: number; sort?: Record<string, 'asc' | 'desc' | 1 | -1> },
+  ): Promise<T[]> {
+    const { page = 1, limit = 10, sort } = options;
+    const skip = (page - 1) * limit;
+
+    return this.model
+      .find(filter)
+      .skip(skip)
+      .limit(limit)
+      .sort(sort || {});
   }
 
   public async getOne(filter: FilterQuery<T>): Promise<T | null> {
