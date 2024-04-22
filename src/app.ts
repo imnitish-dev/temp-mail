@@ -35,18 +35,7 @@ class App {
 
   public listen() {
     this.app.listen(this.port, () => {
-      if (this.env === 'development') {
-        logger.info(`
-          .-----------------------------------.
-          |                                   |
-          |                                   |
-          |        ENV: ${this.env}           |
-          |  App listening on the port ${this.port}   |
-          |                                   |
-          |                                   |
-          |___________________________________|
-          `);
-      }
+      logger.info(`ENV: ${this.env} Server listening on the port ${this.port}`);
     });
   }
 

@@ -1,9 +1,10 @@
 import { Router } from 'express';
 
 import { UserRoute } from '@/routes/user';
+import { MailRoute } from '@/routes/mail';
 import { Routes } from '@/types/routes';
 
-const routes: Routes[] = [new UserRoute('/users')];
+const routes: Routes[] = [new UserRoute('/users'), new MailRoute('/mail')];
 class Route {
   public router = Router();
 
