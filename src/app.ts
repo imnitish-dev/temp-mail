@@ -9,6 +9,9 @@ import hpp from 'hpp';
 import morgan from 'morgan';
 import { logger, stream } from '@utils/logger';
 import { connectMongodb } from '@database';
+import routes from '@/routes/index';
+
+const expressListRoutes = require('express-list-routes');
 
 class App {
   public app: express.Application;
@@ -25,6 +28,9 @@ class App {
 
     this.connectToDatabase();
     logger.info('Database connected');
+
+    this.initializeRoutes();
+    logger.info('Routes initialized');
   }
 
   public listen() {
@@ -57,6 +63,16 @@ class App {
 
   private async connectToDatabase() {
     await connectMongodb();
+  }
+
+  private initializeRoutes() {
+    routes.forEach(route => {
+      this.app.use('/', route.router);
+    });
+
+    if (this.env === 'development') {
+      expressListRoutes(this.app);
+    }
   }
 }
 export default App;
