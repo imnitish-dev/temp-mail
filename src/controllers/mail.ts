@@ -28,7 +28,7 @@ class MailController {
 
   public onMailFrom(address: SMTPServerAddress, session: SMTPServerSession, callback: () => void): void {
     mailService
-      .create({ data: { address, session } as unknown as IMail })
+      .create({ address, session })
       .then(() => {
         logger.info('Mail saved');
       })
@@ -70,17 +70,24 @@ class MailController {
   }
 
   public onData(stream: Readable, session: SMTPServerSession, callback: () => void): void {
-    // console.log('stream- onData=>', stream);
-    // console.log(' session -onData=>', session);
+    let data = '';
 
     stream.on('data', chunk => {
-      const data = chunk.toString();
-      const parsedData = parseEmailData(data);
-      console.log(parsedData);
+      data += chunk.toString();
     });
 
-    stream.on('end', callback);
-    stream.on('end', callback);
+    stream.once('end', () => {
+      const parsedData = parseEmailData(data);
+      mailService
+        .create({ data: parsedData, session })
+        .then(() => {
+          logger.info('Mail data saved');
+        })
+        .catch(err => {
+          logger.error(err);
+        });
+      callback();
+    });
   }
 }
 
