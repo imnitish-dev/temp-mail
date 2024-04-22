@@ -69,17 +69,19 @@ class MailController {
 
     stream.once('end', () => {
       const parsedData = parseEmailData(data);
-      mailService
-        .update({ sessionId: session.id }, {
-          data: parsedData,
-          userId: parsedData.to.split('@')[0]
-        })
-        .then(() => {
-          logger.info('Mail data saved');
-        })
-        .catch(err => {
-          logger.error(err);
-        });
+      if (parsedData.to) {
+        const userId = parsedData.to.split('@')[0];
+        mailService
+          .update({ sessionId: session.id }, { data: parsedData, userId })
+          .then(() => {
+            logger.info('Mail data saved');
+          })
+          .catch(err => {
+            logger.error(err);
+          });
+      } else {
+        logger.error('To field is undefined');
+      }
       callback();
     });
   }

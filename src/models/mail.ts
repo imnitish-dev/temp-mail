@@ -1,5 +1,4 @@
 import mongoose, { Schema } from 'mongoose';
-import { SMTPServerAddress, SMTPServerSession } from 'smtp-server';
 
 interface IMail {
   userId?: string;
