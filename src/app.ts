@@ -9,8 +9,7 @@ import hpp from 'hpp';
 import morgan from 'morgan';
 import { logger, stream } from '@utils/logger';
 import { connectMongodb } from '@database';
-import routes from '@/routes/index';
-
+import mail from '@/routes/mail';
 const expressListRoutes = require('express-list-routes');
 
 class App {
@@ -55,13 +54,10 @@ class App {
   }
 
   private initializeRoutes() {
-    routes.forEach(route => {
-      this.app.use('/', route.router);
-    });
-
-    // if (this.env === 'development') {
-    expressListRoutes(this.app);
-    // }
+    this.app.use('/v1/mail', mail);
+    if (this.env === 'development') {
+      expressListRoutes(this.app);
+    }
   }
 }
 export default App;

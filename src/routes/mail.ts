@@ -1,16 +1,10 @@
-import { Router } from 'express';
-import { Routes } from '@/types/routes';
-import mailController from '@/controllers/mail';
-export class MailRoute implements Routes {
-  public path: string;
-  public router = Router();
+import express from 'express';
+import mail from '@/controllers/mail';
+const router = express.Router();
 
-  constructor(path: string) {
-    this.path = path;
-    this.initializeRoutes();
-  }
+router.get('/:userId', mail.getMail);
+router.get('/', (req, res) => {
+  res.json({ message: 'Hello World!' });
+});
 
-  private initializeRoutes() {
-    this.router.get(`${this.path}/:userId`, mailController.getMail);
-  }
-}
+export default router;
