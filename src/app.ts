@@ -59,9 +59,9 @@ class App {
       this.app.use('/', route.router);
     });
 
-    if (this.env === 'development') {
-      expressListRoutes(this.app);
-    }
+    // if (this.env === 'development') {
+    expressListRoutes(this.app);
+    // }
   }
 }
 export default App;
