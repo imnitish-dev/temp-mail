@@ -67,12 +67,16 @@ class MailController {
   }
 
   public onData(stream: Readable, session: SMTPServerSession, callback: () => void): void {
-    console.log('stream- onData=>', stream);
-    console.log(' session -onData=>', session);
-    stream.pipe(process.stdout);
-    stream.on('end', (data: unknown) => {
-      console.log('end data', data);
-    });
+    // console.log('stream- onData=>', stream);
+    // console.log(' session -onData=>', session);
+   
+      stream.on('data', (chunk) => {
+        const data = chunk.toString();
+        console.log(data);
+      });
+
+      stream.on('end', callback);
+    stream.on('end', callback)
   }
 }
 
