@@ -2,6 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 import { SMTPServerAddress, SMTPServerSession } from 'smtp-server';
 
 interface IMail {
+  userId?: string;
   sessionId?: string;
   address?: string;
   remoteAddress?: string;
@@ -14,6 +15,9 @@ interface IMail {
 
 const mailSchema = new Schema<IMail>(
   {
+    userId: {
+      type: String,
+    },
     sessionId: {
       type: String,
     },
