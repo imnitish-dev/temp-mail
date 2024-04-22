@@ -8,6 +8,7 @@ import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
 import { logger, stream } from '@utils/logger';
+import { connectMongodb } from '@database';
 
 class App {
   public app: express.Application;
@@ -18,6 +19,12 @@ class App {
     this.app = express();
     this.port = parseInt(PORT, 10);
     this.env = NODE_ENV || 'development';
+
+    this.initializeMiddlewares();
+    logger.info('Middlewares initialized');
+
+    this.connectToDatabase();
+    logger.info('Database connected');
   }
 
   public listen() {
@@ -36,6 +43,7 @@ class App {
       }
     });
   }
+
   private initializeMiddlewares() {
     this.app.use(compression());
     this.app.use(express.json());
@@ -45,6 +53,10 @@ class App {
     this.app.use(morgan(LOG_FORMAT, { stream }));
     this.app.use(hpp());
     this.app.use(helmet());
+  }
+
+  private async connectToDatabase() {
+    await connectMongodb();
   }
 }
 export default App;
