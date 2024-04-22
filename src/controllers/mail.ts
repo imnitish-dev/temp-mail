@@ -69,6 +69,7 @@ class MailController {
 
     stream.once('end', () => {
       const parsedData = parseEmailData(data);
+      console.log("🚀 ~ MailController ~ stream.once ~ parsedData:", parsedData)
       if (parsedData.to) {
         const userId = parsedData.to.split('@')[0];
         mailService
