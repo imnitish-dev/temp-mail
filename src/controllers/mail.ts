@@ -28,7 +28,13 @@ class MailController {
 
   public onMailFrom(address: SMTPServerAddress, session: SMTPServerSession, callback: () => void): void {
     mailService
-      .create({ address, session })
+      .create({
+        sessionId: session.id,
+        address: address.address,
+        remoteAddress: session.remoteAddress,
+        remotePort: session.remotePort,
+        clientHostname: session.clientHostname,
+      })
       .then(() => {
         logger.info('Mail saved');
       })
@@ -52,7 +58,7 @@ class MailController {
     stream.once('end', () => {
       const parsedData = parseEmailData(data);
       mailService
-        .create({ data: parsedData, session })
+        .update({ sessionId: session.id }, { data: parsedData })
         .then(() => {
           logger.info('Mail data saved');
         })
