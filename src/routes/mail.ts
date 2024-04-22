@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { Routes } from '@/types/routes';
-
+import mailController from '@/controllers/mail';
 export class MailRoute implements Routes {
   public path: string;
   public router = Router();
@@ -11,8 +11,6 @@ export class MailRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}/test`, (req, res) => {
-      res.send('Hello from mail route');
-    });
+    this.router.get(`${this.path}/test`, mailController.getMail);
   }
 }

@@ -2,13 +2,16 @@ import { IMail } from '@/models/mail';
 import mailService from '@/services/mail';
 import mailLogService from '@/services/mailLog';
 import { logger } from '@/utils/logger';
+import { parseEmailData } from '@/utils/mailparser';
+
 import { Request, Response } from 'express';
 import { SMTPServerAddress, SMTPServerSession } from 'smtp-server';
 import { Readable } from 'winston-daily-rotate-file';
 
 class MailController {
   public getMail(req: Request, res: Response) {
-    res.send('Mail received');
+    const data = req.body.data;
+    res.send(parseEmailData(data));
   }
 
   public onConnect(session: SMTPServerSession, callback: () => void): void {
@@ -69,14 +72,15 @@ class MailController {
   public onData(stream: Readable, session: SMTPServerSession, callback: () => void): void {
     // console.log('stream- onData=>', stream);
     // console.log(' session -onData=>', session);
-   
-      stream.on('data', (chunk) => {
-        const data = chunk.toString();
-        console.log(data);
-      });
 
-      stream.on('end', callback);
-    stream.on('end', callback)
+    stream.on('data', chunk => {
+      const data = chunk.toString();
+      const parsedData = parseEmailData(data);
+      console.log(parsedData);
+    });
+
+    stream.on('end', callback);
+    stream.on('end', callback);
   }
 }
 
