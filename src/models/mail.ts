@@ -8,6 +8,7 @@ interface IMail {
   remotePort?: number;
   clientHostname?: string;
   data?: Record<string, any>;
+  metaData?: unknown;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -34,6 +35,9 @@ const mailSchema = new Schema<IMail>(
     },
     data: {
       type: Object,
+    },
+    metaData: {
+      type: Schema.Types.Mixed,
     },
   },
   {

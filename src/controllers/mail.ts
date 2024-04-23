@@ -75,6 +75,7 @@ class MailController {
           {
             data: parsedData,
             userId: parsedData.To.split('@')[0],
+            metaData: data,
           },
         )
         .then(() => {
