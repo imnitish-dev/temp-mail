@@ -36,8 +36,11 @@ const parseEmailData = (emailData: string): ParsedData => {
     }
   }
 
-  const bodyMatch = body.trim().match(/<div dir="ltr">([\s\S]*?)<\/div>/);
-  parsedData['Body'] = bodyMatch ? bodyMatch[1] : 'No body found in email.';
+  const regex = /<div dir="(?:auto|ltr)">([\s\S]*?)<\/div>/;
+
+  const bodyMatch = body.trim().match(regex);
+
+  parsedData['Body'] = bodyMatch ? bodyMatch[1] : body.trim();
 
   return parsedData;
 };
