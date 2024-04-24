@@ -3,14 +3,22 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 
 const InboxView = ({ username }: { username: String }) => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<ApiResponse | null>(null);
   const [countdown, setCountdown] = useState(5);
+  interface Mail {
+    From: string;
+    Date: string;
+    Subject: string;
+    To: string;
+    Body: string;
+  }
 
+  type ApiResponse = { message: string } | Mail[];
   // Function to fetch data
   const fetchData = async () => {
     try {
       const response = await fetch(`https://mailapi.imnitish.dev/v1/mail/${username}?page=1&limit=10`);
-      const data = await response.json();
+      const data: ApiResponse = await response.json();
       setData(data);
       // Reset the countdown whenever data is fetched
       setCountdown(5);
