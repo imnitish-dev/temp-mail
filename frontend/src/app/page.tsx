@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import { Dancing_Script } from 'next/font/google';
 import InboxView from '@/components/InboxView';
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 const dancingScript = Dancing_Script({
   weight: 'variable', // Specify the weights you need, e.g., 400, 500, 600, 700
   display: 'swap',
