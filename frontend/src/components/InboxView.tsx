@@ -2,14 +2,14 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 
-const InboxView = ({ email }: { email: String }) => {
+const InboxView = ({ username }: { username: String }) => {
   const [data, setData] = useState(null);
   const [countdown, setCountdown] = useState(5);
-  const [yourName, domain] = email.split('@');
+
   // Function to fetch data
   const fetchData = async () => {
     try {
-      const response = await fetch(`https://mailapi.imnitish.dev/v1/mail/${yourName}?page=1&limit=10`);
+      const response = await fetch(`https://mailapi.imnitish.dev/v1/mail/${username}?page=1&limit=10`);
       const data = await response.json();
       setData(data);
       // Reset the countdown whenever data is fetched
@@ -25,7 +25,7 @@ const InboxView = ({ email }: { email: String }) => {
     const intervalId = setInterval(fetchData, 5000);
 
     return () => clearInterval(intervalId); // Clean up the interval on unmount
-  }, [email]);
+  }, [username]);
 
   // Countdown timer
   useEffect(() => {
@@ -35,7 +35,7 @@ const InboxView = ({ email }: { email: String }) => {
     }
   }, [countdown]);
   return (
-    <div className="bg-[#F0F4FF] p-4 w-4/5 gap-4 rounded-lg flex flex-col ">
+    <div className="bg-[#F0F4FF] p-2 md:p-4 w-full lg:w-4/5 gap-4 rounded-lg flex flex-col ">
       <button onClick={() => fetchData()}>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
           <path
@@ -48,20 +48,31 @@ const InboxView = ({ email }: { email: String }) => {
       <p>Next refresh in: {countdown} seconds</p>
       <h2 className="text-xl">Your Inbox</h2>
       {data && Array.isArray(data) ? (
-        <table className="text-left">
-          <thead>
-            <tr>{Object.keys(data[0]).map(key => key !== 'To' && <th key={key}>{key}</th>)}</tr>
-          </thead>
-          <tbody>
-            {data.map((row, i) => (
-              <tr key={i} className="w-min">
-                {Object.entries(row).map(
-                  ([key, value], j) => key !== 'To' && <td key={j}>{key === 'Date' ? new Date(value).toLocaleString() : value}</td>,
-                )}
+        <div className="rounded-xl border text-sm border-slate-500 ">
+          <table className="table-auto rounded-full p-2 border-collapse  w-full text-left md:table-fixed">
+            <thead>
+              <tr className="text-white bg-[#343445]">
+                <th className=" p-2">Sender</th>
+                <th className=" p-2">Subject</th>
+                <th className=" p-2">Body</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {data.map((row, i) => (
+                <tr key={i} className="w-min border-collapser">
+                  <td className="p-2">
+                    {row.From.split(' <').map((item, index) => (
+                      <p key={index}>{item.replace(/>$/, '')}</p>
+                    ))}
+                  </td>
+
+                  <td className="p-2"> {row.Subject}</td>
+                  <td className="p-2"> {row.Body}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
         <div className="p-8 w-full flex flex-col items-center justify-center gap-8">
           <svg

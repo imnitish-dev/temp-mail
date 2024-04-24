@@ -9,33 +9,36 @@ const dancingScript = Dancing_Script({
   subsets: ['latin'], // Recommended to avoid FOIT (Flash of Invisible Text)
 });
 
-const emailDomain = process.env.NEXT_PUBLIC_EMAIL_DOMAIN || '';
-
 export default function Home() {
-  const [currentEmail, setCurrentEmail] = useState<string>(`abc@${emailDomain}`);
+  const [username, setUsername] = useState('abc');
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     // Extract the username from the email
-    const username = event.target.value.split('@')[0];
-    setCurrentEmail(`${username}@${emailDomain}`);
+    const userEmail = event.target.value.split('@')[0];
+    if (userEmail.includes('mail.imnitish.dev')) return;
+    setUsername(event.target.value.split('@')[0]);
   };
 
   return (
-    <main className="flex bg-[rgb(240,254,254)] text-black min-h-screen flex-col items-center justify-between p-24">
-      <section className="flex flex-col justify-center items-center">
-        <h1 className="text-6xl text-center text-[#343445]">
+    <main className="flex bg-white text-black min-h-screen flex-col items-center justify-center">
+      <section className="flex py-16 lg:px-8 md:px-4 bg-[rgb(240,254,254)] flex-col justify-center items-center">
+        <h1 className="text-3xl lg:text-6xl text-center text-[#343445]">
           <div className={`${dancingScript.className} font-bold text-blue-600`}>Temporary</div> Email Address
         </h1>
-        <div className="border-2 w-1/2 p-8 text-center border-white border-dotted">
-          <h3 className="p-4 text-xl">
+        <div className="border-2 md:w-2/3 lg:w-1/2 p-2 md:p-4 lg:p-8 text-center border-white border-dotted">
+          <h3 className="p-2 md:p-4  md:text-lg lg:text-xl">
             Forget about spam, advertising mailings, hacking and attacking robots. Keep your real mailbox clean and secure. Temp Mail provides
             temporary, secure, anonymous, free, disposable email address.
           </h3>
           <div className="flex justify-between px-4 gap-2 items-center">
-            <input value={currentEmail} onChange={handleChange} className="grow px-8 rounded-full bg-[#343445] text-white p-4"></input>
+            <input
+              value={`${username}@mail.imnitish.dev`}
+              onChange={handleChange}
+              className={` ${username === '' ? 'bg-red-500' : ''} grow max-md:text-center md:px-8 rounded-full bg-[#343445] text-white p-2 md:p-4`}
+            ></input>
             <button
               onClick={() => {
-                navigator.clipboard.writeText(currentEmail);
+                navigator.clipboard.writeText(`${username}@mail.imnitish.dev`);
               }}
               className="bg-[#EAF0F4] flex gap-2 rounded-full p-4 text-blue-500"
             >
@@ -57,7 +60,9 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {currentEmail != '' && <InboxView email={currentEmail} />}
+      <section className=" flex justify-center items-center py-4 md:py-8 lg:py-16 lg:px-8 md:px-4  w-full">
+        {username != '' && <InboxView username={username} />}
+      </section>
     </main>
   );
 }
