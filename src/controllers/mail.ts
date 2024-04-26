@@ -67,8 +67,8 @@ class MailController {
       data += chunk.toString();
     });
 
-    stream.once('end', () => {
-      const parsedData = parseEmailData(data);
+    stream.once('end', async () => {
+      const parsedData = await parseEmailData(data);
       mailService
         .update(
           { sessionId: session.id },
