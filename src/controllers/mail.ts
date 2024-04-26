@@ -13,7 +13,15 @@ class MailController {
     try {
       const userId = req.params.userId;
       const { page, limit } = req.query;
-      const data = await mailService.getAll({ userId }, { page: Number(page ?? 1), limit: Number(limit ?? 10), sort: { _id: -1 } });
+      const data = await mailService.getAll(
+        {
+          userId: {
+            $regex: userId,
+            $options: 'i',
+          },
+        },
+        { page: Number(page ?? 1), limit: Number(limit ?? 10), sort: { _id: -1 } },
+      );
 
       if (data.length === 0) {
         return res.status(404).json({ message: 'Mail not found' });
