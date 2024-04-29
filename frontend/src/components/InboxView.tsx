@@ -8,6 +8,7 @@ const InboxView = ({ username }: { username: String }) => {
   const [countdown, setCountdown] = useState(5);
   const [view, setView] = useState('list');
   const [emailData, setEmailData] = useState<Mail | null>(null);
+
   interface Mail {
     From: string;
     Date: string;
@@ -90,11 +91,11 @@ const InboxView = ({ username }: { username: String }) => {
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
-                          strokewidth="{1.5}"
+                          strokeWidth="{1.5}"
                           stroke="currentColor"
                           className="w-6 h-6"
                         >
-                          <path strokelinecap="round" strokelinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                          <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                         </svg>
                       </button>{' '}
                     </td>
@@ -103,9 +104,7 @@ const InboxView = ({ username }: { username: String }) => {
               </tbody>
             </table>
           ) : (
-            <>
-              <EmailView setView={setView} data={emailData} />
-            </>
+            <>{emailData && <EmailView setView={setView} data={emailData} />}</>
           )}
         </div>
       ) : (
