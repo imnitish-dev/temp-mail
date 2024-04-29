@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Dancing_Script } from 'next/font/google';
 import InboxView from '@/components/InboxView';
 import { useState, ChangeEvent } from 'react';
+import { Tooltip } from 'react-tooltip';
 const dancingScript = Dancing_Script({
   weight: 'variable', // Specify the weights you need, e.g., 400, 500, 600, 700
   display: 'swap',
@@ -11,6 +12,7 @@ const dancingScript = Dancing_Script({
 
 export default function Home() {
   const [username, setUsername] = useState('abc');
+  const [message, setMessage] = useState('Copy to clipboard');
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     // Extract the username from the email
@@ -37,10 +39,15 @@ export default function Home() {
               className={` ${username === '' ? 'bg-red-500' : ''} grow max-md:text-center md:px-8 rounded-full bg-[#343445] text-white p-2 md:p-4`}
             ></input>
             <button
+              data-tooltip-id="my-tooltip"
+              data-tooltip-content={message}
+              data-tooltip-place="bottom"
               onClick={() => {
                 navigator.clipboard.writeText(`${username}@mail.imnitish.dev`);
+                setMessage('Copied!');
+                setTimeout(() => setMessage('Copy to clipboard'), 2000);
               }}
-              className="bg-[#EAF0F4] flex gap-2 rounded-full p-4 text-blue-500"
+              className={`bg-[#EAF0F4] hover:bg-[#343445] flex gap-2 rounded-full p-2 md:p-4 text-blue-500`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -57,6 +64,7 @@ export default function Home() {
                 />
               </svg>
             </button>
+            <Tooltip id="my-tooltip" style={{ backgroundColor: '#343445' }} />
           </div>
         </div>
       </section>
