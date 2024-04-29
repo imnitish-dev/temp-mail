@@ -1,10 +1,13 @@
 'use client';
 import React from 'react';
 import { useState, useEffect } from 'react';
+import EmailView from './EmailView';
 
 const InboxView = ({ username }: { username: String }) => {
   const [data, setData] = useState<ApiResponse | null>(null);
   const [countdown, setCountdown] = useState(5);
+  const [view, setView] = useState('list');
+  const [emailData, setEmailData] = useState<Mail | null>(null);
   interface Mail {
     From: string;
     Date: string;
@@ -56,30 +59,54 @@ const InboxView = ({ username }: { username: String }) => {
       <p>Next refresh in: {countdown} seconds</p>
       <h2 className="text-xl">Your Inbox</h2>
       {data && Array.isArray(data) ? (
-        <div className="rounded-xl border text-sm border-slate-500 ">
-          <table className="table-auto rounded-full p-2 border-collapse  w-full text-left md:table-fixed">
-            <thead>
-              <tr className="text-white bg-[#343445]">
-                <th className=" p-2">Sender</th>
-                <th className=" p-2">Subject</th>
-                <th className=" p-2">Body</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((row, i) => (
-                <tr key={i} className="w-min border-collapser">
-                  <td className="p-2">
-                    {row.From.split(' <').map((item, index) => (
-                      <p key={index}>{item.replace(/>$/, '')}</p>
-                    ))}
-                  </td>
-
-                  <td className="p-2"> {row.Subject}</td>
-                  <td className="p-2"> {row.Body}</td>
+        <div className="rounded-xl border h-screen text-sm border-slate-500 ">
+          {view === 'list' ? (
+            <table className="table-auto  p-2 border-collapse w-full text-left md:table-fixed">
+              <thead>
+                <tr className="text-white bg-[#343445]">
+                  <th className=" rounded-tl-xl  p-2">Sender</th>
+                  <th className=" p-2">Subject</th>
+                  <th className=" rounded-tr-xl p-2">View</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {data.map((row, i) => (
+                  <tr key={i} className="w-min border-collapse">
+                    <td className="p-2">
+                      {row.From.split(' <').map((item, index) => (
+                        <p key={index}>{item.replace(/>$/, '')}</p>
+                      ))}
+                    </td>
+
+                    <td className="p-2"> {row.Subject}</td>
+                    <td className="p-2">
+                      <button
+                        onClick={() => {
+                          setEmailData(row);
+                          setView('email');
+                        }}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokewidth="{1.5}"
+                          stroke="currentColor"
+                          className="w-6 h-6"
+                        >
+                          <path strokelinecap="round" strokelinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                        </svg>
+                      </button>{' '}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <>
+              <EmailView setView={setView} data={emailData} />
+            </>
+          )}
         </div>
       ) : (
         <div className="p-8 w-full flex flex-col items-center justify-center gap-8">
