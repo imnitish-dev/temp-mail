@@ -27,6 +27,7 @@ const EmailView = ({ data, setView }: { data: Mail; setView: React.Dispatch<Reac
       }
       if (rootRef.current) {
         rootRef.current.render(<div>{parse(Body)}</div>);
+        
       }
     }
   }, [Body]);
@@ -48,7 +49,7 @@ const EmailView = ({ data, setView }: { data: Mail; setView: React.Dispatch<Reac
         <div className="p-4">Subject: {Subject}</div>
       </div>
 
-      <iframe className="w-full grow" ref={iframeRef} />
+      <iframe  className="w-full grow" ref={iframeRef} />
     </div>
   );
 };
